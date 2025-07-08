@@ -16,12 +16,12 @@ export default function PhotographerProfile() {
   const [imageLoading, setImageLoading] = useState(true);
   const [retryCount, setRetryCount] = useState(0);
 
-  // Robust photographer lookup with retry logic
+  
   useEffect(() => {
     if (!id) return;
 
     const findPhotographer = () => {
-      // Case-insensitive and type-agnostic ID comparison
+      
       const found = photographers.find(p => 
         p.id.toString().toLowerCase() === id.toString().toLowerCase()
       );
@@ -175,7 +175,7 @@ export default function PhotographerProfile() {
   );
 }
 
-// Helper Components
+
 function SkeletonProfile() {
   return (
     <div className="min-h-screen bg-gray-50">
