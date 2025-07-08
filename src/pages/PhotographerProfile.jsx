@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { usePhotographers } from '../Context/PhotographersContext';
+import { usePhotographers } from '../context/PhotographersContext';
 import Header from '../components/common/Header';
 import Gallery from '../components/profile/Gallery';
 import Reviews from '../components/profile/Reviews';
@@ -58,7 +58,7 @@ export default function PhotographerProfile() {
     );
   }
 
-  if (!photographer) {
+  if (error || !photographer) {
     return (
       <div className="min-h-screen bg-gray-50">
         <Header />

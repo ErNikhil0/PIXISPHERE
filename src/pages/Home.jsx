@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { usePhotographers } from '../Context/PhotographersContext';
+import { usePhotographers } from '../context/PhotographersContext';
 import Header from '../components/common/Header';
 import SearchBar from '../components/common/SearchBar';
 import FilterSidebar from '../components/common/FilterSidebar';

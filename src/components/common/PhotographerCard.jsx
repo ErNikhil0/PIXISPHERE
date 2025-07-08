@@ -3,7 +3,10 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 const PhotographerCard = memo(({ photographer }) => {
-  if (!photographer || !photographer.id) return null;
+  if (!photographer || !photographer.id) {
+    console.error('Invalid photographer data:', photographer);
+    return null;
+  }
 
   return (
     <motion.div
@@ -16,9 +19,13 @@ const PhotographerCard = memo(({ photographer }) => {
       <Link 
         to={`/photographers/${photographer.id}`}
         className="block h-full bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-200"
+        aria-label={`View ${photographer.name}'s profile`}
       >
-        {/* Image Container - Fixed aspect ratio */}
-        <div className="relative pb-[56.25%] overflow-hidden"> {/* 16:9 aspect ratio */}
+        {/* Image Container  */}
+        <div className="relative pb-[56.25%] overflow-hidden">
+          {!photographer.profilePic && (
+            <div className="absolute inset-0 bg-gray-200 animate-pulse"></div>
+          )}
           <motion.img
             src={photographer.profilePic || '/placeholder-photographer.jpg'}
             alt={photographer.name}
@@ -32,10 +39,6 @@ const PhotographerCard = memo(({ photographer }) => {
               e.target.src = '/placeholder-photographer.jpg';
             }}
           />
-          {/* Loading skeleton */}
-          {!photographer.profilePic && (
-            <div className="absolute inset-0 bg-gray-200 animate-pulse"></div>
-          )}
         </div>
         
         {/* Card Content */}
@@ -88,5 +91,7 @@ const PhotographerCard = memo(({ photographer }) => {
     </motion.div>
   );
 });
+
+PhotographerCard.displayName = 'PhotographerCard'; 
 
 export default PhotographerCard;
