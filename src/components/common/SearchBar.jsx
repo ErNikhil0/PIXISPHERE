@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { usePhotographers } from '../../Context/PhotographersContext';
+import { usePhotographers } from '../../context/PhotographersContext';
 import useDebounce from '../../hooks/useDebounce';
 
 export default function SearchBar() {

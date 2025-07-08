@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { usePhotographers } from '../Context/PhotographersContext';
+import { usePhotographers } from '../context/PhotographersContext';
 import Header from '../components/common/Header';
 import Gallery from '../components/profile/Gallery';
 import Reviews from '../components/profile/Reviews';
@@ -14,13 +14,26 @@ export default function PhotographerProfile() {
   const [photographer, setPhotographer] = useState(null);
   const [isInquiryOpen, setIsInquiryOpen] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (id && photographers.length) {
-      const found = photographers.find(p => p.id === parseInt(id));
-      setPhotographer(found);
+    if (!id) {
+      setError('No photographer ID provided');
+      return;
     }
-  }, [id, photographers]);
+
+    if (!loading && photographers.length > 0) {
+      const found = photographers.find(p => String(p.id) === String(id));
+      
+      if (!found) {
+        setError(`No photographer found with ID: ${id}`);
+        console.error('Available IDs:', photographers.map(p => p.id));
+      }
+      
+      setPhotographer(found);
+      setError(null);
+    }
+  }, [id, photographers, loading]);
 
   if (loading) {
     return (
@@ -41,14 +54,21 @@ export default function PhotographerProfile() {
     );
   }
 
-  if (!photographer) {
+  if (error || !photographer) {
     return (
       <div className="min-h-screen bg-gray-50">
         <Header />
         <div className="flex items-center justify-center h-[calc(100vh-80px)]">
           <div className="text-center">
             <h1 className="text-2xl font-bold">Photographer not found</h1>
-            <p className="mt-2 text-gray-600">No photographer exists with ID: {id}</p>
+            <p className="mt-2 text-gray-600">
+              {error || `No photographer exists with ID: ${id}`}
+            </p>
+            {photographers.length > 0 && (
+              <p className="mt-1 text-sm text-gray-500">
+                Available IDs: {photographers.map(p => p.id).join(', ')}
+              </p>
+            )}
             <button 
               onClick={() => window.history.back()} 
               className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition cursor-pointer"
